@@ -6,10 +6,35 @@
 	},
 	"item": [
 		{
-			"name": "List all users",
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+							"postman.setEnvironmentVariable(\"login\", jsonData.login);\r",
+							"console.log(\"login: \", jsonData.login);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"login\": \"{{$randomUserName}}\"\r\n}"
+				},
 				"url": {
 					"raw": "http://arch.homework/users",
 					"protocol": "http",
@@ -30,7 +55,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://arch.homework/users/1",
+					"raw": "http://arch.homework/users/{{id}}",
 					"protocol": "http",
 					"host": [
 						"arch",
@@ -38,27 +63,17 @@
 					],
 					"path": [
 						"users",
-						"1"
+						"{{id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create user",
+			"name": "List all users",
 			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"firstName\": \"First\",\r\n    \"lastName\": \"Last\",\r\n    \"login\": \"first_last\"\r\n}"
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
 					"raw": "http://arch.homework/users",
 					"protocol": "http",
@@ -80,7 +95,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\": \"First\",\r\n    \"lastName\": \"Last\",\r\n    \"login\": \"first_last\",\r\n    \"version\": 0\r\n}",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"login\": \"{{login}}\",\r\n    \"version\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -88,7 +103,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://arch.homework/users/1",
+					"raw": "http://arch.homework/users/{{id}}",
 					"protocol": "http",
 					"host": [
 						"arch",
@@ -96,7 +111,7 @@
 					],
 					"path": [
 						"users",
-						"1"
+						"{{id}}"
 					]
 				}
 			},
@@ -108,7 +123,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://arch.homework/users/1",
+					"raw": "http://arch.homework/users/{{id}}",
 					"protocol": "http",
 					"host": [
 						"arch",
@@ -116,7 +131,7 @@
 					],
 					"path": [
 						"users",
-						"1"
+						"{{id}}"
 					]
 				}
 			},
